@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Gardena Smart System",
+        "description": "Ange dina Husqvarna Group API-uppgifter. Du kan skapa en applikation på https://developer.husqvarnagroup.cloud/",
+        "data": {
+          "client_id": "Applikationsnyckel (Client ID)",
+          "client_secret": "Applikationshemlighet (Client Secret)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Ogiltiga autentiseringsuppgifter.",
+      "cannot_connect": "Kunde inte ansluta till Gardena API.",
+      "no_locations": "Inga platser hittades i ditt Gardena-konto.",
+      "unknown": "Ett oväntat fel inträffade."
+    },
+    "abort": {
+      "already_configured": "Detta konto är redan konfigurerat."
+    }
+  }
+}

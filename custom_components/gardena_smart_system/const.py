@@ -1,0 +1,68 @@
+"""Constants for the Gardena Smart System integration."""
+
+DOMAIN = "gardena_smart_system"
+
+CONF_CLIENT_ID = "client_id"
+CONF_CLIENT_SECRET = "client_secret"
+
+# API endpoints
+AUTH_URL = "https://api.authentication.husqvarnagroup.dev/v1/oauth2/token"
+API_BASE_URL = "https://api.smart.gardena.dev/v2"
+LOCATIONS_URL = f"{API_BASE_URL}/locations"
+WEBSOCKET_URL = f"{API_BASE_URL}/websocket"
+COMMAND_URL = f"{API_BASE_URL}/command"
+
+# Token refresh buffer (seconds before expiry)
+TOKEN_REFRESH_BUFFER = 300  # 5 minutes
+
+# WebSocket reconnect settings
+WS_RECONNECT_DELAYS = [5, 10, 30, 60, 60]  # exponential backoff
+WS_MAX_RETRIES = 5
+
+# Device types
+DEVICE_TYPE_MOWER = "MOWER"
+DEVICE_TYPE_VALVE = "VALVE"
+DEVICE_TYPE_VALVE_SET = "VALVE_SET"
+DEVICE_TYPE_SENSOR = "SENSOR"
+DEVICE_TYPE_COMMON = "COMMON"
+DEVICE_TYPE_POWER_SOCKET = "POWER_SOCKET"
+
+# Service types from API
+SERVICE_MOWER = "MOWER"
+SERVICE_VALVE = "VALVE"
+SERVICE_VALVE_SET = "VALVE_SET"
+SERVICE_SENSOR = "SENSOR"
+SERVICE_COMMON = "COMMON"
+SERVICE_DEVICE = "DEVICE"
+
+# Mower activities
+MOWER_ACTIVITY_PAUSED = "PAUSED"
+MOWER_ACTIVITY_OK_CUTTING = "OK_CUTTING"
+MOWER_ACTIVITY_OK_CUTTING_TIMER_OVERRIDDEN = "OK_CUTTING_TIMER_OVERRIDDEN"
+MOWER_ACTIVITY_OK_SEARCHING = "OK_SEARCHING"
+MOWER_ACTIVITY_OK_LEAVING = "OK_LEAVING"
+MOWER_ACTIVITY_OK_CHARGING = "OK_CHARGING"
+MOWER_ACTIVITY_PARKED_TIMER = "PARKED_TIMER"
+MOWER_ACTIVITY_PARKED_PARK_SELECTED = "PARKED_PARK_SELECTED"
+MOWER_ACTIVITY_PARKED_AUTOTIMER = "PARKED_AUTOTIMER"
+MOWER_ACTIVITY_NONE = "NONE"
+
+# Valve activities
+VALVE_ACTIVITY_CLOSED = "CLOSED"
+VALVE_ACTIVITY_MANUAL_WATERING = "MANUAL_WATERING"
+VALVE_ACTIVITY_SCHEDULED_WATERING = "SCHEDULED_WATERING"
+
+# Platforms
+PLATFORMS = ["lawn_mower", "valve", "sensor", "binary_sensor"]
+
+# Attributes
+ATTR_BATTERY_LEVEL = "battery_level"
+ATTR_RF_LINK_LEVEL = "rf_link_level"
+ATTR_RF_LINK_STATE = "rf_link_state"
+ATTR_SERIAL = "serial"
+ATTR_MODEL_TYPE = "model_type"
+ATTR_ACTIVITY = "activity"
+ATTR_STATE = "state"
+ATTR_OPERATING_HOURS = "operating_hours"
+ATTR_LAST_ERROR_CODE = "last_error_code"
+ATTR_DURATION = "duration"

@@ -1,0 +1,54 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Gardena Smart System",
+        "description": "Enter your Husqvarna Group API credentials. You can create an application at https://developer.husqvarnagroup.cloud/",
+        "data": {
+          "client_id": "Application Key (Client ID)",
+          "client_secret": "Application Secret (Client Secret)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid authentication credentials.",
+      "cannot_connect": "Unable to connect to the Gardena API.",
+      "no_locations": "No locations found in your Gardena account.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This account is already configured."
+    }
+  },
+  "entity": {
+    "lawn_mower": {
+      "mower": {
+        "name": "Mower"
+      }
+    },
+    "valve": {
+      "valve": {
+        "name": "Valve"
+      }
+    },
+    "sensor": {
+      "soil_temperature": {
+        "name": "Soil Temperature"
+      },
+      "soil_humidity": {
+        "name": "Soil Humidity"
+      },
+      "light_intensity": {
+        "name": "Light Intensity"
+      },
+      "battery": {
+        "name": "Battery"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Connection"
+      }
+    }
+  }
+}

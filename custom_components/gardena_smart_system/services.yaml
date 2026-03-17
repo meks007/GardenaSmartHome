@@ -1,0 +1,76 @@
+start_mowing:
+  name: Start Mowing
+  description: Start the mower for a specified duration or resume schedule.
+  target:
+    entity:
+      domain: lawn_mower
+      integration: gardena_smart_system
+  fields:
+    duration:
+      name: Duration
+      description: Duration in minutes. If omitted, resumes schedule.
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 1440
+          unit_of_measurement: min
+
+dock_mower:
+  name: Dock Mower
+  description: Send the mower back to the dock.
+  target:
+    entity:
+      domain: lawn_mower
+      integration: gardena_smart_system
+
+pause_mower:
+  name: Pause Mower
+  description: Pause the mower.
+  target:
+    entity:
+      domain: lawn_mower
+      integration: gardena_smart_system
+
+open_valve:
+  name: Open Valve
+  description: Open a valve for a specified duration.
+  target:
+    entity:
+      domain: valve
+      integration: gardena_smart_system
+  fields:
+    duration:
+      name: Duration
+      description: Duration in minutes (default 30).
+      required: false
+      default: 30
+      selector:
+        number:
+          min: 1
+          max: 1440
+          unit_of_measurement: min
+
+close_valve:
+  name: Close Valve
+  description: Close a valve.
+  target:
+    entity:
+      domain: valve
+      integration: gardena_smart_system
+
+pause_valve:
+  name: Pause Valve
+  description: Pause an active valve.
+  target:
+    entity:
+      domain: valve
+      integration: gardena_smart_system
+
+unpause_valve:
+  name: Unpause Valve
+  description: Unpause a paused valve.
+  target:
+    entity:
+      domain: valve
+      integration: gardena_smart_system

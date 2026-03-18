@@ -46,7 +46,11 @@ def sample_location_response():
 
 @pytest.fixture
 def sample_location_detail_response():
-    """Return sample location detail response with devices."""
+    """Return sample location detail response with devices.
+
+    Matches real API: DEVICE objects have NO attributes.
+    Device name, modelType, serial are in the COMMON service.
+    """
     return {
         "data": {
             "id": "location-1",
@@ -56,11 +60,6 @@ def sample_location_detail_response():
             {
                 "id": "device-1",
                 "type": "DEVICE",
-                "attributes": {
-                    "name": {"value": "Sileno City"},
-                    "modelType": {"value": "GARDENA smart Sileno City"},
-                    "serial": {"value": "12345678"},
-                },
                 "relationships": {
                     "services": {
                         "data": [
@@ -84,6 +83,9 @@ def sample_location_detail_response():
                 "id": "service-common-1",
                 "type": "COMMON",
                 "attributes": {
+                    "name": {"value": "Sileno City"},
+                    "modelType": {"value": "GARDENA smart Sileno City"},
+                    "serial": {"value": "12345678"},
                     "batteryLevel": {"value": 85},
                     "rfLinkLevel": {"value": 90},
                     "rfLinkState": {"value": "ONLINE"},
@@ -92,11 +94,6 @@ def sample_location_detail_response():
             {
                 "id": "device-2",
                 "type": "DEVICE",
-                "attributes": {
-                    "name": {"value": "Soil Sensor"},
-                    "modelType": {"value": "GARDENA smart Sensor"},
-                    "serial": {"value": "87654321"},
-                },
                 "relationships": {
                     "services": {
                         "data": [
@@ -119,6 +116,9 @@ def sample_location_detail_response():
                 "id": "service-common-2",
                 "type": "COMMON",
                 "attributes": {
+                    "name": {"value": "Soil Sensor"},
+                    "modelType": {"value": "GARDENA smart Sensor"},
+                    "serial": {"value": "87654321"},
                     "batteryLevel": {"value": 72},
                     "rfLinkLevel": {"value": 80},
                     "rfLinkState": {"value": "ONLINE"},

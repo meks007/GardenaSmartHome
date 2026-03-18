@@ -154,7 +154,11 @@ class GardenaDataCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             _LOGGER.error("Error fetching devices for location %s: %s", location_id, err)
 
     def _process_included_data(self, included: list[dict[str, Any]]) -> None:
-        """Process included data from API response into device structure."""
+        """Process included data from API response into device structure.
+
+        Note: The real API returns DEVICE objects WITHOUT attributes.
+        Device name, model, and serial are found in the COMMON service instead.
+        """
         # First pass: collect devices
         devices: dict[str, dict[str, Any]] = {}
         services: list[dict[str, Any]] = []
@@ -194,6 +198,22 @@ class GardenaDataCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                             }
                         )
                         break
+
+        # Third pass: populate device attributes from COMMON service
+        # The real API returns DEVICE objects without attributes — name, modelType,
+        # and serial are provided by the COMMON service instead.
+        for device in devices.values():
+            if device.get("attributes"):
+                continue  # Already has attributes (shouldn't happen with real API)
+            for service in device.get("services", []):
+                if service.get("type") == SERVICE_COMMON:
+                    common_attrs = service.get("attributes", {})
+                    device["attributes"] = {
+                        "name": common_attrs.get("name", {}),
+                        "modelType": common_attrs.get("modelType", {}),
+                        "serial": common_attrs.get("serial", {}),
+                    }
+                    break
 
         # Merge into existing devices
         self._devices.update(devices)
@@ -238,6 +258,18 @@ class GardenaDataCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def _handle_ws_message(self, data: dict[str, Any]) -> None:
         """Handle a WebSocket message and update device state."""
         msg_type = data.get("type", "")
+        msg_id = data.get("id", "")
+
+        # DEVICE and LOCATION messages may lack attributes — just track relationships
+        if msg_type == SERVICE_DEVICE:
+            if msg_id in self._devices:
+                relationships = data.get("relationships", {})
+                if relationships:
+                    self._devices[msg_id]["relationships"] = relationships
+            return
+
+        if msg_type == "LOCATION":
+            return  # Location updates don't affect device state
 
         if msg_type in (
             SERVICE_MOWER,
@@ -245,25 +277,35 @@ class GardenaDataCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             SERVICE_VALVE_SET,
             SERVICE_SENSOR,
             SERVICE_COMMON,
-            SERVICE_DEVICE,
         ):
-            service_id = data.get("id", "")
             attributes = data.get("attributes", {})
+            if not attributes:
+                return
 
             # Update the matching service in our device store
             for device in self._devices.values():
                 for service in device.get("services", []):
-                    if service["id"] == service_id:
+                    if service["id"] == msg_id:
                         service["attributes"].update(attributes)
+
+                        # If COMMON service updated, also refresh device-level attributes
+                        # (name, modelType, serial) since DEVICE objects lack their own
+                        if msg_type == SERVICE_COMMON:
+                            dev_attrs = device.get("attributes", {})
+                            for key in ("name", "modelType", "serial"):
+                                if key in attributes:
+                                    dev_attrs[key] = attributes[key]
+                            device["attributes"] = dev_attrs
+
                         _LOGGER.debug(
-                            "Updated service %s (%s)", service_id, msg_type
+                            "Updated service %s (%s)", msg_id, msg_type
                         )
                         self.async_set_updated_data(self._devices)
                         return
 
             _LOGGER.debug(
                 "Received update for unknown service %s (%s)",
-                service_id,
+                msg_id,
                 msg_type,
             )
 

@@ -93,6 +93,27 @@ class TestDeviceProcessing:
         assert len(mower_services) == 1
         assert mower_services[0]["type"] == "MOWER"
 
+    def test_device_attributes_from_common_service(
+        self, sample_location_detail_response
+    ):
+        """Test that device attributes are populated from COMMON service.
+
+        The real API returns DEVICE objects without attributes.
+        Name, modelType, and serial come from the COMMON service.
+        """
+        coordinator = GardenaDataCoordinator.__new__(GardenaDataCoordinator)
+        coordinator._devices = {}
+
+        included = sample_location_detail_response["included"]
+        coordinator._process_included_data(included)
+
+        device = coordinator.get_device("device-1")
+        assert device is not None
+        attrs = device.get("attributes", {})
+        assert attrs.get("name", {}).get("value") == "Sileno City"
+        assert attrs.get("modelType", {}).get("value") == "GARDENA smart Sileno City"
+        assert attrs.get("serial", {}).get("value") == "12345678"
+
     def test_ws_connected_tracking(self):
         """Test WebSocket connection tracking."""
         coordinator = GardenaDataCoordinator.__new__(GardenaDataCoordinator)

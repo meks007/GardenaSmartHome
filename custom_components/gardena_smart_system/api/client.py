@@ -115,27 +115,19 @@ class GardenaClient:
 
         Args:
             service_id: The mower service ID.
-            duration: Duration in minutes. If None, resumes schedule.
+            duration: Duration in minutes. Defaults to 60 min.
         """
-        if duration:
-            command = {
-                "data": {
-                    "type": SERVICE_MOWER_COMMAND,
-                    "attributes": {
-                        "command": "START_SECONDS_TO_OVERRIDE",
-                        "seconds": duration * 60,
-                    },
-                    "id": f"request-{uuid.uuid4()}",
-                }
+        seconds = (duration * 60) if duration else 3600
+        command = {
+            "data": {
+                "type": SERVICE_MOWER_COMMAND,
+                "attributes": {
+                    "command": "START_SECONDS_TO_OVERRIDE",
+                    "seconds": seconds,
+                },
+                "id": f"request-{uuid.uuid4()}",
             }
-        else:
-            command = {
-                "data": {
-                    "type": SERVICE_MOWER_COMMAND,
-                    "attributes": {"command": "RESUME_SCHEDULE"},
-                    "id": f"request-{uuid.uuid4()}",
-                }
-            }
+        }
         return await self.send_command(service_id, command)
 
     async def mower_park(self, service_id: str) -> dict[str, Any]:

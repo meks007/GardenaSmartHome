@@ -54,6 +54,7 @@ class GardenaValve(GardenaEntity, ValveEntity):
     """Representation of a Gardena irrigation valve."""
 
     _attr_device_class = ValveDeviceClass.WATER
+    _attr_reports_position = False
     _attr_supported_features = (
         ValveEntityFeature.OPEN | ValveEntityFeature.CLOSE
     )
@@ -81,14 +82,10 @@ class GardenaValve(GardenaEntity, ValveEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra state attributes."""
         return {
-            "activity": self.get_service_attribute("activity", {}).get("value"),
-            "duration": self.get_service_attribute("duration", {}).get("value"),
-            "battery_level": self.get_common_attribute("batteryLevel", {}).get(
-                "value"
-            ),
-            "rf_link_level": self.get_common_attribute("rfLinkLevel", {}).get(
-                "value"
-            ),
+            "activity": self.get_service_attribute("activity"),
+            "duration": self.get_service_attribute("duration"),
+            "battery_level": self.get_common_attribute("batteryLevel"),
+            "rf_link_level": self.get_common_attribute("rfLinkLevel"),
         }
 
     async def async_open_valve(self, **kwargs: Any) -> None:

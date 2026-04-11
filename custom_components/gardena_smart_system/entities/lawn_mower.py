@@ -115,19 +115,11 @@ class GardenaLawnMower(GardenaEntity, LawnMowerEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra state attributes."""
         return {
-            "battery_level": self.get_common_attribute("batteryLevel", {}).get(
-                "value"
-            ),
-            "rf_link_level": self.get_common_attribute("rfLinkLevel", {}).get(
-                "value"
-            ),
-            "operating_hours": self.get_service_attribute(
-                "operatingHours", {}
-            ).get("value"),
-            "last_error_code": self.get_service_attribute(
-                "lastErrorCode", {}
-            ).get("value"),
-            "activity": self.get_service_attribute("activity", {}).get("value"),
+            "battery_level": self.get_common_attribute("batteryLevel"),
+            "rf_link_level": self.get_common_attribute("rfLinkLevel"),
+            "operating_hours": self.get_service_attribute("operatingHours"),
+            "last_error_code": self.get_service_attribute("lastErrorCode"),
+            "activity": self.get_service_attribute("activity"),
         }
 
     async def async_start_mowing(self) -> None:

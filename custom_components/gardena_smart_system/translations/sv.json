@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Gardena Smart System",
-        "description": "Ange dina Husqvarna Group API-uppgifter. Du kan skapa en applikation på https://developer.husqvarnagroup.cloud/",
+        "description": "Ange dina Husqvarna Group API-uppgifter från Husqvarna Developer Portal.",
         "data": {
           "client_id": "Applikationsnyckel (Client ID)",
           "client_secret": "Applikationshemlighet (Client Secret)"

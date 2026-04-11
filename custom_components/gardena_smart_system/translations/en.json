@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Gardena Smart System",
-        "description": "Enter your Husqvarna Group API credentials. You can create an application at https://developer.husqvarnagroup.cloud/",
+        "description": "Enter your Husqvarna Group API credentials from the Husqvarna Developer Portal.",
         "data": {
           "client_id": "Application Key (Client ID)",
           "client_secret": "Application Secret (Client Secret)"

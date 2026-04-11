@@ -10,7 +10,7 @@ AUTH_URL = "https://api.authentication.husqvarnagroup.dev/v1/oauth2/token"
 API_BASE_URL = "https://api.smart.gardena.dev/v2"
 LOCATIONS_URL = f"{API_BASE_URL}/locations"
 WEBSOCKET_URL = f"{API_BASE_URL}/websocket"
-COMMAND_URL = f"{API_BASE_URL}/command"
+COMMAND_URL = "https://api.smart.gardena.dev/v1/command"
 
 # Token refresh buffer (seconds before expiry)
 TOKEN_REFRESH_BUFFER = 300  # 5 minutes

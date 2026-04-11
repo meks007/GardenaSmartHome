@@ -210,8 +210,8 @@ class GardenaClient:
         return await self.send_command(service_id, command)
 
 
-SERVICE_MOWER_COMMAND = "MOWER_COMMAND"
-SERVICE_VALVE_COMMAND = "VALVE_COMMAND"
+SERVICE_MOWER_COMMAND = "MOWER_CONTROL"
+SERVICE_VALVE_COMMAND = "VALVE_CONTROL"
 
 
 class GardenaApiError(Exception):

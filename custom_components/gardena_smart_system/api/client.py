@@ -55,6 +55,7 @@ class GardenaClient:
     ) -> dict[str, Any]:
         """Send a command to a device service."""
         url = f"{COMMAND_URL}/{service_id}"
+        command["data"]["id"] = service_id
         return await self._api_request("PUT", url, json=command)
 
     async def _api_request(

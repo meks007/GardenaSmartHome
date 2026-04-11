@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json as _json
 import logging
 import uuid
 from typing import Any
@@ -55,7 +56,6 @@ class GardenaClient:
     ) -> dict[str, Any]:
         """Send a command to a device service."""
         url = f"{COMMAND_URL}/{service_id}"
-        command["data"]["id"] = service_id
         return await self._api_request("PUT", url, json=command)
 
     async def _api_request(
@@ -67,17 +67,21 @@ class GardenaClient:
         """Make an authenticated API request."""
         await self._auth.ensure_valid_token()
         headers = self._auth.get_headers()
+        # Serialize manually so aiohttp does not override our Content-Type header
+        # (aiohttp's json= kwarg sets Content-Type: application/json internally,
+        # overwriting application/vnd.api+json which Gardena requires)
+        data = _json.dumps(json).encode("utf-8") if json is not None else None
 
         try:
             async with self._session.request(
-                method, url, headers=headers, json=json
+                method, url, headers=headers, data=data
             ) as resp:
                 if resp.status == 401:
                     _LOGGER.debug("Token expired, re-authenticating")
                     await self._auth.authenticate()
                     headers = self._auth.get_headers()
                     async with self._session.request(
-                        method, url, headers=headers, json=json
+                        method, url, headers=headers, data=data
                     ) as retry_resp:
                         retry_resp.raise_for_status()
                         if retry_resp.content_length == 0:

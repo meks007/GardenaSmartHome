@@ -110,13 +110,30 @@ class GardenaDataCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         attribute: str,
         default: Any = None,
     ) -> Any:
-        """Get an attribute value from a device service."""
+        """Get an attribute value from a device service by type (first match)."""
         services = self.get_services_by_type(device_id, service_type)
         if not services:
             return default
         attrs = services[0].get("attributes", {})
         attr_data = attrs.get(attribute, {})
         return attr_data.get("value", default)
+
+    def get_service_attribute_by_id(
+        self,
+        device_id: str,
+        service_id: str,
+        attribute: str,
+        default: Any = None,
+    ) -> Any:
+        """Get an attribute value from a specific service by its ID."""
+        device = self._devices.get(device_id)
+        if not device:
+            return default
+        for service in device.get("services", []):
+            if service["id"] == service_id:
+                attr_data = service.get("attributes", {}).get(attribute, {})
+                return attr_data.get("value", default)
+        return default
 
     async def async_setup(self) -> None:
         """Set up the coordinator - authenticate and fetch initial data."""

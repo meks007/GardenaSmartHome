@@ -51,9 +51,9 @@ class GardenaEntity(CoordinatorEntity[GardenaDataCoordinator]):
     def get_service_attribute(
         self, attribute: str, default: Any = None
     ) -> Any:
-        """Get attribute value from device service."""
-        return self.coordinator.get_service_attribute(
-            self._device_id, self._service_type, attribute, default
+        """Get attribute value from this entity's specific service."""
+        return self.coordinator.get_service_attribute_by_id(
+            self._device_id, self._service_id, attribute, default
         )
 
     def get_common_attribute(

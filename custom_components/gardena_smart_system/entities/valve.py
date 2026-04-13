@@ -68,7 +68,11 @@ class GardenaValve(GardenaEntity, ValveEntity):
         """Initialize the valve entity."""
         super().__init__(coordinator, device_id, service_id, SERVICE_VALVE)
         self._attr_unique_id = f"{device_id}_{service_id}"
-        self._attr_translation_key = "valve"
+
+    @property
+    def name(self) -> str | None:
+        """Return the valve's individual name from the service."""
+        return self.get_service_attribute("name") or "Valve"
 
     @property
     def is_closed(self) -> bool:

@@ -64,6 +64,13 @@ SOIL_SENSOR_TYPES: list[GardenaSensorDescription] = [
         device_class=SensorDeviceClass.ILLUMINANCE,
         native_unit="lx",
     ),
+    GardenaSensorDescription(
+        key="ambient_temperature",
+        attribute="ambientTemperature",
+        name="Ambient Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit=UnitOfTemperature.CELSIUS,
+    ),
 ]
 
 BATTERY_SENSOR = GardenaSensorDescription(
@@ -93,15 +100,17 @@ async def async_setup_entry(
             sensor_service = next(
                 s for s in services if s["type"] == SERVICE_SENSOR
             )
+            service_attrs = sensor_service.get("attributes", {})
             for desc in SOIL_SENSOR_TYPES:
-                entities.append(
-                    GardenaSensor(
-                        coordinator=coordinator,
-                        device_id=device_id,
-                        service_id=sensor_service["id"],
-                        description=desc,
+                if desc.attribute in service_attrs:
+                    entities.append(
+                        GardenaSensor(
+                            coordinator=coordinator,
+                            device_id=device_id,
+                            service_id=sensor_service["id"],
+                            description=desc,
+                        )
                     )
-                )
 
         # Add battery sensor if device has COMMON service with battery
         if SERVICE_COMMON in service_types:

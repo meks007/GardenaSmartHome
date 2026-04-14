@@ -201,9 +201,46 @@ class GardenaClient:
         }
         return await self.send_command(service_id, command)
 
+    async def power_socket_on(
+        self, service_id: str, duration: int | None = None
+    ) -> dict[str, Any]:
+        """Turn on the power socket.
+
+        Args:
+            service_id: The power socket service ID.
+            duration: Duration in minutes. If None, turns on indefinitely.
+        """
+        if duration:
+            attrs: dict[str, Any] = {
+                "command": "START_SECONDS_TO_OVERRIDE",
+                "seconds": duration * 60,
+            }
+        else:
+            attrs = {"command": "START_OVERRIDE"}
+        command = {
+            "data": {
+                "type": SERVICE_POWER_SOCKET_COMMAND,
+                "attributes": attrs,
+                "id": f"request-{uuid.uuid4()}",
+            }
+        }
+        return await self.send_command(service_id, command)
+
+    async def power_socket_off(self, service_id: str) -> dict[str, Any]:
+        """Turn off the power socket."""
+        command = {
+            "data": {
+                "type": SERVICE_POWER_SOCKET_COMMAND,
+                "attributes": {"command": "STOP_UNTIL_NEXT_TASK"},
+                "id": f"request-{uuid.uuid4()}",
+            }
+        }
+        return await self.send_command(service_id, command)
+
 
 SERVICE_MOWER_COMMAND = "MOWER_CONTROL"
 SERVICE_VALVE_COMMAND = "VALVE_CONTROL"
+SERVICE_POWER_SOCKET_COMMAND = "POWER_SOCKET_CONTROL"
 
 
 class GardenaApiError(Exception):

@@ -23,6 +23,7 @@ from .const import (
     SERVICE_COMMON,
     SERVICE_DEVICE,
     SERVICE_MOWER,
+    SERVICE_POWER_SOCKET,
     SERVICE_SENSOR,
     SERVICE_VALVE,
     SERVICE_VALVE_SET,
@@ -303,6 +304,7 @@ class GardenaDataCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             SERVICE_VALVE_SET,
             SERVICE_SENSOR,
             SERVICE_COMMON,
+            SERVICE_POWER_SOCKET,
         ):
             attributes = data.get("attributes", {})
             if not attributes:

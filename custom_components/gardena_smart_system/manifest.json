@@ -1,12 +1,12 @@
 {
   "domain": "gardena_smart_system",
   "name": "Gardena Smart System",
-  "codeowners": ["@CorSeptem"],
+  "codeowners": ["@meks007"],
   "config_flow": true,
-  "documentation": "https://github.com/CorSeptem/GardenaSmartHome",
+  "documentation": "https://github.com/meks007/GardenaSmartHome",
   "integration_type": "hub",
   "iot_class": "cloud_push",
-  "issue_tracker": "https://github.com/CorSeptem/GardenaSmartHome/issues",
+  "issue_tracker": "https://github.com/meks007/GardenaSmartHome/issues",
   "requirements": [],
   "version": "1.1.4"
 }
